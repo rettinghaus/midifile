@@ -65,6 +65,14 @@ set(HDRS
 
 add_library(midifile STATIC ${SRCS} ${HDRS})
 
+if(MIDIFILE_BUILD_TESTS)
+  add_executable(midifile_test test/test.cpp)
+  target_include_directories(
+    midifile_test PRIVATE external_libraries/Catch2/single_include/
+  )
+  target_link_libraries(midifile_test midifile)
+endif()
+
 ##############################
 ##
 ## Programs:
