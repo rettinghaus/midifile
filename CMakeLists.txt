@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.1)
 
 project(midifile C CXX)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(CheckIncludeFiles)
@@ -21,7 +21,7 @@ option(BUILD_MIDILIBRARY_ONLY "Build only the midifile library" OFF)
 ##
 
 if(APPLE)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "12" CACHE STRING "Minimum OS X deployment version")
 endif()
 
 if(MSVC)
@@ -66,6 +66,14 @@ set(HDRS
 )
 
 add_library(midifile STATIC ${SRCS} ${HDRS})
+
+if(MIDIFILE_BUILD_TESTS)
+  add_executable(midifile_test test/test.cpp)
+  target_include_directories(
+    midifile_test PRIVATE external_libraries/Catch2/single_include/
+  )
+  target_link_libraries(midifile_test midifile)
+endif()
 
 ##############################
 ##
